@@ -1,2 +1,2 @@
 # Gromacs_Analysis_commands
-Gromacs Ananlysis
+Anji Babu Kapakayala
