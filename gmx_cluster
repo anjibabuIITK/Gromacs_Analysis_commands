@@ -1,0 +1,46 @@
+#!/bin/bash
+for i in `seq 6.00 0.50 30.00`; do 
+
+
+cd cbl-avi-US-$i 
+echo "!---------------------------------------------------------------------!"
+echo "                            cbl-avi-US-$i"
+echo "!---------------------------------------------------------------------!"
+
+#To copy the index file for Protein+ligand and ligand heavy atoms index.
+cp ../index.ndx .
+
+#To generate the trajectory vi protein heavy atom roto-translational least square fitting (2)and centering the protein(2). The output is protein+ligand (22).
+
+gmx trjconv -f mdrun_wrap.xtc -s mdrun.tpr -o mdrun_align_pro.xtc -n index.ndx -center -fit rot+trans << EOF
+2
+2
+22
+EOF
+
+#Now make a separate clustering folder, copy the required files and perform clustering.
+
+mkdir cluster
+
+mv mdrun_align_pro.xtc   cluster/ 
+mv index.ndx    cluster/
+
+cp ../mdrun-pro-lig.gro cluster/
+cp ../view-align.vmd cluster/
+
+cd cluster
+
+#Let's perform the clustering of the ligand binding conformations with RMSD of 2 Ang. Ligand heavy atoms (23) are choosen for RMSD calculation. Top three clusters are saved in .gro format with the protein+ligand (22) output.
+
+gmx cluster -s ../mdrun.tpr -f mdrun_align_pro.xtc -n index.ndx -g cluster.log -o cluster.xpm -cl clusters.gro -sz clustersize.xvg -method gromos -cutoff 0.2 -wcl 3 -nofit  << EOF
+23
+22
+EOF
+
+echo "!---------------------------------------------------------------------!"
+echo "      ***     cbl-avi-US-$i clustering has been completed.       ***   "
+echo "!---------------------------------------------------------------------!"
+
+cd ../../
+
+done

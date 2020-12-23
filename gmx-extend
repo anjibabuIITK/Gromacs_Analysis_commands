@@ -1,0 +1,24 @@
+#This script is to extend the gromacs simulation defined in time period (in ps).
+
+#Define time period to extend in ps (e.g. for 1ns = 1000ps ).
+time_period_extend=10000
+
+mkdir EXTEND1
+cd EXTEND1
+cp ../COLVAR .
+cp ../mdrun.cpt .
+cp ../mdrun.tpr .
+
+#Insterting RESTART keyword before the first line in plumed.dat.
+cp ../plumed.dat .
+
+sed -i "1 i\ RESTART" plumed.dat
+
+
+#Editing the submit file for extending simulation.
+cp ../submit.sh .
+
+#The below sed command will search from grommpp to the end of line and replace with the given text.
+
+sed -i "s/grompp.*$/ convert-tpr -s mdrun.tpr -f mdrun.cpt -o mdrun.tpr -extend $time_period_extend/" submit.sh
+

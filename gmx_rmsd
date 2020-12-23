@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#To extimate the rmsd of protein. 1 is the "protein" group for least square fitting and 4 is the "backbone" to calculate RMSD.
+
+#for i in `seq 4.00 0.50 30.00` ; do
+#for i in 10.00 10.50 11.00 11.50 12.00 12.50 14.00 14.50 16.00 16.50 17.00 17.50 18.00 18.50; do
+i=9.50
+
+cd cbl-avi-US-$i-10 
+echo "!-------------------------------------------------------------------!"
+echo "                            cbl-avi-US-$i"
+echo "!-------------------------------------------------------------------!"
+
+gmx rms -s mdrun.tpr -f mdrun_wrap.xtc -o rmsd_protein.xvg -tu ns << EOF
+1
+4
+EOF
+
+gmx rms -s mdrun.tpr -f mdrun_wrap.xtc -o rmsd_lig.xvg -tu ns << EOF
+1
+13
+EOF
+
+cd ..
+done

@@ -1,0 +1,14 @@
+#This script is to restart and append the gromacs and plumed from the crashed/stopped time point.
+
+##Insterting RESTART keyword before the first line in plumed.dat.
+sed -i "1 i\RESTART" plumed.dat
+
+#Editing the submit.sh file for extending simulation.
+#In first step we will comment the grompp command line.
+
+sed  -i  "/grompp/ s/^/#/" submit.sh
+
+#In second step we will modify the mdrun command line.
+sed -i "s/-deffnm mdrun/-deffnm mdrun -cpi mdrun.cpt /" submit.sh
+
+

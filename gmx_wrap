@@ -1,0 +1,25 @@
+#!/bin/bash
+#for i in 10.00 10.50 11.00 11.50 12.00 12.50 14.00 14.50 16.00 16.50 17.00 17.50 18.00 18.50; do
+i=9.50
+
+cd cbl-avi-US-$i-10 
+echo "!------------------------------------------------------!"
+echo "                            cbl-avi-US-$i"
+echo "!------------------------------------------------------!"
+
+gmx trjconv -f mdrun.xtc -s mdrun.tpr -o mdrun_wrap.xtc -pbc mol -ur compact -center << EOF
+1
+0
+EOF
+
+echo "cbl-avi-US-$i trajectory is wrapping"
+
+
+cd ..
+done
+
+
+#--------------------------------------------------------------------------------
+
+#gmx trjconv -f $r"_nopbc.xtc" -s $r.tpr -dump 16960 -o reactiv-str.gro
+#To dump the particular frame from gromacs trajectory.

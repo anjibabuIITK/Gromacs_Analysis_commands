@@ -1,0 +1,18 @@
+#!/bin/bash
+#To extimate the rmsf of the protein backbone. 4 is the "protein backbone" group for least square fitting and calculate RMSF.
+
+for i in 4.00 10.00  ; do
+#for i in `seq 4.00 0.50 6.00` ; do
+
+cd cbl-avi-US-$i 
+echo "!-------------------------------------------------------------------!"
+echo "                            cbl-avi-US-$i"
+echo "!-------------------------------------------------------------------!"
+
+gmx rmsf -s mdrun.tpr -f mdrun_wrap.xtc -res -o rmsf.xvg  << EOF
+4
+EOF
+
+
+cd ..
+done
